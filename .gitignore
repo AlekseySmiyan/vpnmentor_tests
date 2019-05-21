@@ -1,3 +1,5 @@
 .idea/
 ENV/
 __pycache__/
+allure-report/
+reports/
