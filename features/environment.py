@@ -3,20 +3,20 @@ from selenium import webdriver
 
 import os
 from utils import get_ip
+import settings
+from pages.ip_info_page import IpInfoPage
 
-# base dir project
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# drivers path
-DRIVERS_DIR = os.path.join(BASE_DIR, 'drivers')
-CHROME_DRIVER_PATH = os.path.join(DRIVERS_DIR, 'chromedriver')
+@fixture()
+def setup_driver(context):
+    context.browser = webdriver.Chrome(executable_path=settings.CHROME_DRIVER_PATH)
+    yield context.browser
+    context.browser.quit()
 
 
 @fixture()
 def setup_app(context):
-    context.browser = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH)
-    yield context.browser
-    context.browser.quit()
+    context.ip_info_page = IpInfoPage(context.browser)
 
 
 @fixture()
@@ -25,5 +25,6 @@ def get_my_ip(context):
 
 
 def before_all(context):
+    use_fixture(setup_driver, context)
     use_fixture(setup_app, context)
     use_fixture(get_my_ip, context)
