@@ -14,10 +14,10 @@ def step_impl(context):
     assert view_ip == context.my_ip
 
 
-@then('view location IP address')
-def step_impl(context):
+@then('view location IP address "{country}"')
+def step_impl(context, country):
     location = context.ip_info_page.get_view_location()
-    assert location == 'Ukraine'
+    assert location == country
 
 
 @then('input ip address "{ip_address}" in lookup field')
